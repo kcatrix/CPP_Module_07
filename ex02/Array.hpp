@@ -1,46 +1,53 @@
-#ifndef ARRAY_HPP
-# define ARRAY_HPP
-# include <string>
-# include <iostream>
+#pragma once
+#include <iostream>
 
-template< typename T >
-T const & max( T const & x, T const & y )
+template <typename T>
+class Array
 {
-	return ( x > y ? x : y );
-}
+    private:
+        unsigned int    _size;
+        T   *_items;
+    public:
+        Array(void) : _size(0)
+        {
+            this->_items = new T[0];
+        }
+        
+        Array(unsigned int size) : _size(size)
+        {
+            this->_items = new T[size];
+        }
 
-template< typename T >
-T const & min( T const & x, T const & y )
-{
-	return ( x < y ? x : y );
-}
+        Array(const Array<T> & copy)
+        {
+            *this = copy;
+        }
 
-template< typename T >
-void swap( T & x, T & y )
-{
-	T plot;
+        ~Array(void)
+        { }
 
-	plot = x;
-	x = y;
-	y = plot;
-}
+        Array<T>&  operator=(const Array<T> & copy)
+        {
+            this->_size = copy.size();
+            this->_items = new T[this->_size];
 
-template< typename A > 
-void func( A & a )
-{
-	a += 1;
-}
+            for (unsigned int i = 0; i < this->_size; i++)
+                this->_items[i] = copy[i];
 
-template< typename A, typename B, typename C > 
-void iter(A *a, B const b, C ( *f )( A& ) )
-{
-	size_t i = 0;
-	while ( i != b )
-	{
-		f( a[i] );
-		i++;
-	}
-}
+            return (*this);
+        }
+        
+        T&     operator[](unsigned int index) const
+        {
+            if (index < 0 || index >= this->_size)
+                throw std::exception();
+ 
+            return (this->_items[index]);
+        }
 
+        unsigned int    size(void) const
+        {
+            return (this->_size);
+        }
+};
 
-#endif

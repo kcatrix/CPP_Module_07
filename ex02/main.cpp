@@ -1,32 +1,53 @@
-#include "Array.tpp"
 #include "Array.hpp"
 
-struct Not_Happening : std::exception
-{
-	const char * what() const throw() {return "Not Happening !\n";}
-};
+#define MAX_VAL 10
 
-int	main( )
+int main(int, char**)
 {
-	size_t t = 5;
+    Array<int> numbers(MAX_VAL);
+    int* mirror = new int[MAX_VAL];
+    srand(time(NULL));
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        const int value = rand();
+        numbers[i] = value;
+        mirror[i] = value;
+    }
+    //SCOPE
+    {
+        Array<int> tmp = numbers;
+        Array<int> test(tmp);
+    }
 
-	::Array<int> a;
-	::Array<char> b(t);
-	::Array<char> c(b);
-	::Array<int> e(t);
-	::Array<int> const f;
-	
-	size_t i = 4;
-	try
-	{
-		if (i > b.size())
-			throw Not_Happening();
-		else
-			std::cout << "L'element i = " << b.x[i] << " et la taille du tableau est " << b.size() << std::endl;
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what();
-	}
-	return 0;
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        if (mirror[i] != numbers[i])
+        {
+            std::cerr << "didn't save the same value!!" << std::endl;
+            return 1;
+        }
+    }
+    try
+    {
+        numbers[-2] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "NEGATIVE : " << e.what() << '\n';
+    }
+    try
+    {
+        numbers[MAX_VAL] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << "MAX_VAL : " << e.what() << '\n';
+    }
+
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        std::cout << "N[" << i << "]=" << numbers[i] << "\n";
+    }
+    delete[] mirror;
+    return 0;
 }
