@@ -39,7 +39,7 @@ class Array
         
         T&     operator[](unsigned int index) const
         {
-            if (index < 0 || index >= this->_size)
+            if (index >= this->_size)
                 throw std::exception();
  
             return (this->_items[index]);

@@ -1,22 +1,26 @@
-NAME = temp
+NAME = Iter
+
+SRC = $(shell find . -type f -name "*.cpp" | cut -c 3-)
+
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp
+FLAG = -Werror -Wall -Wextra -O2 -std=c++98
 
-%.o: %.cpp
-	${CC} ${CFLAGS} -c $^
+INCLUDES = $(shell find . -type f -name "*.hpp" | cut -c 3-)
 
-OBJS = ${SRCS:.cpp=.o}
-all: ${NAME}
+OBJS	= $(SRC:.cpp=.o)
 
-${NAME}: ${OBJS}
-	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+all:		$(NAME)
 
-fclean: clean
-	rm -f ${NAME}
+$(NAME): $(OBJS) $(INCLUDES)
+			@$(CC) $(FLAG) -o $(NAME) $(OBJS)
+%.o: %.cpp $(INCLUDES)
+	$(CC) $(FLAG) -c $< -o $@
 
 clean:
-	rm -f ${OBJS}
+			@rm -f $(OBJS)
 
-re: fclean all
+fclean: clean
+			@rm -f $(NAME)
+
+re:	fclean all

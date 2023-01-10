@@ -1,23 +1,25 @@
 #include "iter.hpp"
 
-void	put_char(char c)
-{ std::cout << c; }
-
-void	put_string(char *str)
+int	main(void)
 {
-	while (str && *str)
-		put_char(std::toupper(*str++));
-    put_char('\n');
-}
+	int			arrayInt[5] = {0, 1, 2, 3, 4};
+	std::string	arrayStr[5] = {"Retsuko", "Fenneko", "Haida", "Washimi", "Gori"};
+	const char	*arrayStrC[5] = {"Haida", "Washimi", "Retsuko", "Fenneko", "Gori"};
+	char		arrayChar[5] = {'r', 'e', 't', 's', 'u'};
 
-int	main(int ac, char **av)
-{
-    std::cout << "Array of char =\n";
-    ::iter(av[0], strlen(av[0]), put_char);
+	iter<int>(arrayInt, 5, printArray);
+	std::cout << std::endl;
+	iter<int>(arrayInt, 2, printArray);
+	std::cout << std::endl;
 
-    std::cout << "\n\nArray of std::string =\n";
-    if (ac > 1)
-        ::iter(av + 1, ac - 1, put_string);
+	iter<std::string>(arrayStr, 5, printArray);
+	std::cout << std::endl;
 
-    return (0);
+	iter<const char *>(arrayStrC, 5, printArray);
+	std::cout << std::endl;
+
+	iter<char>(arrayChar, 5, printArray);
+	std::cout << std::endl;
+
+	return (0);
 }
